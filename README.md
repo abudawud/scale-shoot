@@ -48,7 +48,7 @@ Payload have this JSON structure
 |[healthcheck](#healthcheck)|PUT|Realtime status node|
 |[capture](#capture)|PUT, GET|Send / Request capture|
 |[swap_gate](#swap_gate)|GET|Change gate A->B and vice versa|
-|[toggle_gate](#toggle_gate)|PUT|Open / Close Gate|
+|[open_gate](#open_gate)|PUT|Open Gate|
 |[toggle_mode](#toggle_mode)|PUT|Change mode manual / automatic|
 
 
@@ -105,20 +105,18 @@ Payload have this JSON structure
 ```
 - in / out: Target Gate Id
 
-#### toggle_gate
+#### open_gate
 
 ```json
 {
-    "cmd": "toggle_gate",
+    "cmd": "open_gate",
     "type": "PUT",
     "data" {
         "target": "gate_a",
-        "state": "open"
     }
 }
 ```
 - type: `PUT` | `GET`
-- state: `open` | `close`
 - target: Gate Target id
 
 #### toggle_mode
