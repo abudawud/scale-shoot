@@ -41,6 +41,17 @@ Payload have this JSON structure
 }
 ```
 
+### Command List
+
+|Command|Type|Description|
+|-------|-----|------|
+|[healthcheck](#healthcheck)|PUT|Realtime status node|
+|[capture](#capture)|PUT, GET|Send / Request capture|
+|[swap_gate](#swap_gate)|GET|Change gate A->B and vice versa|
+|[toggle_gate](#toggle_gate)|PUT|Open / Close Gate|
+|[toggle_mode](#toggle_mode)|PUT|Change mode manual / automatic|
+
+
 #### healthcheck
 
 ```json
@@ -54,34 +65,32 @@ Payload have this JSON structure
     }
 }
 ```
-- type: `PUT` | `GET`
 
-#### capture (GET)
+#### capture
 
-````json
+*GET*
+```json
 {
     "cmd": "capture",
     "type": "GET",
 }
-``````
-- type: `PUT` | `GET`
+```
 
-#### capture (PUT)
-
-````json
+*PUT*
+```json
 {
     "cmd": "capture",
     "type": "PUT",
     "data": {
       "rfid": "111898123",
+      "capture_file": "/paht/to/file.jpg",
       "weight": "35",
       "timestamp": "1655541152"
     }
 }
-``````
-- type: `PUT` | `GET`
+```
 
-#### swap_gate (PUT)
+#### swap_gate
 
 ```json
 {
@@ -93,10 +102,9 @@ Payload have this JSON structure
     }
 }
 ```
-- type: `PUT` | `GET`
 - in / out: Target Gate Id
 
-#### toggle_gate (PUT)
+#### toggle_gate
 
 ```json
 {
@@ -112,7 +120,7 @@ Payload have this JSON structure
 - state: `open` | `close`
 - target: Gate Target id
 
-#### toggle_mode (PUT)
+#### toggle_mode
 
 ```json
 {
