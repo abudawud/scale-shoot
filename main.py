@@ -1,4 +1,5 @@
 # This Python file uses the following encoding: utf-8
+import rc_icon
 import os
 from pathlib import Path
 import sys

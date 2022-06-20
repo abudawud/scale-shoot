@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/auto.svg</file>
+        <file>icons/door.svg</file>
+        <file>icons/door_lock.svg</file>
+        <file>icons/manual.svg</file>
+        <file>icons/unlock.svg</file>
+    </qresource>
+</RCC>

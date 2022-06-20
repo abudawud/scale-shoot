@@ -1,4 +1,4 @@
 {
-    "files": ["main.py", "main.qml"],
-    "qmlImportPaths": ["/usr/lib/qt/qml"]
+    "files": ["main.py","main.qml","rc_icon.qrc"],
+    "qmlImportPaths": ["~/.local/lib/qt/qml"]
 }
