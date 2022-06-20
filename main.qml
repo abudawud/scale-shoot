@@ -258,7 +258,7 @@ Window {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: childFrame1.top
-            source: "qrc:/qtquickplugin/images/template_image.png"
+            source: "qrc:/icons/goat.png"
             anchors.bottomMargin: 0
             anchors.rightMargin: 0
             anchors.leftMargin: 0
