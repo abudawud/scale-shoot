@@ -169,6 +169,7 @@ Window {
                 palette.button = activeColor
                 btnManual.palette.button = primaryColor
                 frameManual.visible = false
+                con.publish("AUTU")
             }
         }
 
