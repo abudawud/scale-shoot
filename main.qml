@@ -169,7 +169,7 @@ Window {
                 palette.button = activeColor
                 btnManual.palette.button = primaryColor
                 frameManual.visible = false
-                con.publish("AUTU")
+                txtWeight.text = con.getConfig("broker_ip")
             }
         }
 
