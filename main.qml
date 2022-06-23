@@ -149,6 +149,7 @@ Window {
                 palette.button = activeColor
                 btnAuto.palette.button = primaryColor
                 frameManual.visible = true
+                con.evalCMD("toggle_mode_manual")
             }
         }
 
@@ -169,7 +170,7 @@ Window {
                 palette.button = activeColor
                 btnManual.palette.button = primaryColor
                 frameManual.visible = false
-                txtWeight.text = con.getConfig("broker_ip")
+                con.evalCMD("toggle_mode_auto")
             }
         }
 
@@ -191,6 +192,7 @@ Window {
                 btnInGateB.palette.button = primaryColor
                 icon.source = "qrc:/icons/door.svg"
                 btnInGateB.icon.source = "qrc:/icons/door_lock.svg"
+                con.evalCMD("swap_gate_in_a")
             }
         }
 
@@ -212,6 +214,7 @@ Window {
                 btnInGateA.palette.button = primaryColor
                 icon.source = "qrc:/icons/door.svg"
                 btnInGateA.icon.source = "qrc:/icons/door_lock.svg"
+                con.evalCMD("swap_gate_in_b")
             }
         }
     }
@@ -517,6 +520,9 @@ Window {
             anchors.rightMargin: 2
             anchors.leftMargin: 2
             anchors.topMargin: 2
+            onClicked: {
+                con.evalCMD("open_gate_a")
+            }
         }
 
         Button {
@@ -529,10 +535,13 @@ Window {
             icon.source: "qrc:/icons/unlock.svg"
             anchors.rightMargin: 2
             anchors.topMargin: 2
+            onClicked: {
+                con.evalCMD("open_gate_b")
+            }
         }
 
         Button {
-            id: btnGateA2
+            id: btnCapture
             text: qsTr("CAPTURE")
             anchors.left: parent.left
             anchors.right: parent.right
@@ -540,6 +549,9 @@ Window {
             anchors.bottomMargin: 2
             anchors.leftMargin: 2
             anchors.rightMargin: 2
+            onClicked: {
+                con.evalCMD("capture")
+            }
         }
     }
 
