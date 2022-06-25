@@ -59,6 +59,7 @@ Payload have this JSON structure
     "cmd": "healthcheck",
     "type": "PUT",
     "data": {
+        "device_id": "77:98:17:AA",
         "code": "200",
         "timestamp": "1655541152",
         "message": "ok",
@@ -82,7 +83,6 @@ Payload have this JSON structure
     "cmd": "capture",
     "type": "PUT",
     "data": {
-      "device_id": "77:98:17:AA",
       "rfid": "111898123",
       "capture_file": "/paht/to/file.jpg",
       "weight": "35",
