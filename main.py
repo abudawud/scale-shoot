@@ -12,10 +12,9 @@ from sslib import Console
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
-    context = engine.rootContext()
     console = Console()
 
-    context.setContextProperty("con", console)
+    engine.rootContext().setContextProperty("con", console)
     engine.load(os.fspath(Path(__file__).resolve().parent / "main.qml"))
     if not engine.rootObjects():
         sys.exit(-1)

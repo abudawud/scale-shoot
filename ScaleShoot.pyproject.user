@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 5.0.3, 2022-06-22T23:16:07. -->
+<!-- Written by QtCreator 5.0.3, 2022-06-23T21:22:26. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -137,6 +137,7 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/home/hafidz/Work/Code/Infra/my-env/data/QT/ScaleShoot/sslib.py</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./home/hafidz/Work/Code/Infra/my-env/data/QT/ScaleShoot/sslib.py</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/hafidz/Work/Code/Infra/my-env/data/QT/ScaleShoot/sslib.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{400bfb8b-d462-44a0-824e-75f019e62ed1}</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Script">/home/hafidz/Work/Code/Infra/my-env/data/QT/ScaleShoot/sslib.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
@@ -154,6 +155,7 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/home/hafidz/Work/Code/Infra/my-env/data/QT/ScaleShoot/config.ini</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./home/hafidz/Work/Code/Infra/my-env/data/QT/ScaleShoot/config.ini</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/hafidz/Work/Code/Infra/my-env/data/QT/ScaleShoot/config.ini</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{5971f6b4-c722-46ee-9bd8-152b9c70d7ce}</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Script">/home/hafidz/Work/Code/Infra/my-env/data/QT/ScaleShoot/config.ini</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>

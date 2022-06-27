@@ -14,6 +14,27 @@ Window {
     property alias rectangle1Color: navBar.color
     title: qsTr("DeviceID")
 
+    function twoDigit(num) {
+        return num < 10 ? "0" + num : num;
+    }
+
+    function getCurrentTime() {
+            const date = new Date()
+            const day = twoDigit(date.getDate())
+            const month = twoDigit(date.getMonth())
+            const year = date.getFullYear()
+            const hours = twoDigit(date.getHours())
+            const minutes = twoDigit(date.getMinutes())
+            const second = twoDigit(date.getSeconds())
+
+            return `${day}/${month}/${year} ${hours}:${minutes}:${second}`;
+        }
+
+
+    Timer{
+        interval: 1000; running: true; repeat: true
+        onTriggered: txtCTime.text = getCurrentTime()
+    }
 
     Rectangle {
         id: statusBar
@@ -73,9 +94,9 @@ Window {
                 }
 
                 Text {
-                    id: text3
+                    id: txtCTime
                     color: "#ffffff"
-                    text: qsTr("02/06/2022 21:00")
+                    text: getCurrentTime()
                     font.pixelSize: 12
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
@@ -247,7 +268,7 @@ Window {
             Text {
                 id: txtWeight
                 color: "#ffffff"
-                text: qsTr("34 Kg")
+                text: con.weight
                 anchors.fill: parent
                 font.pixelSize: 40
                 horizontalAlignment: Text.AlignHCenter
@@ -351,7 +372,7 @@ Window {
 
                     Text {
                         id: text8
-                        text: qsTr("119922812")
+                        text: con.rfid
                         font.pixelSize: 12
                         Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                         Layout.rowSpan: 0
@@ -388,7 +409,7 @@ Window {
 
                     Text {
                         id: text10
-                        text: qsTr("30 Kg")
+                        text: con.weight
                         font.pixelSize: 12
                         Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                         Layout.preferredHeight: -1
@@ -425,7 +446,7 @@ Window {
 
                     Text {
                         id: text12
-                        text: qsTr("20/06/2022")
+                        text: con.timestamp.split(",")[0]
                         font.pixelSize: 12
                         Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                         Layout.rowSpan: 0
@@ -451,7 +472,7 @@ Window {
                     spacing: 0
                     Text {
                         id: text13
-                        text: qsTr("TANGGAL TIMBANG")
+                        text: qsTr("JAM TIMBANG")
                         font.pixelSize: 12
                         Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                         Layout.preferredHeight: -1
@@ -462,7 +483,7 @@ Window {
 
                     Text {
                         id: text14
-                        text: qsTr("21:00")
+                        text: con.timestamp.split(",")[1]
                         font.pixelSize: 12
                         Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                         Layout.preferredHeight: -1
