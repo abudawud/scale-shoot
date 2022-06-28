@@ -12,7 +12,7 @@ Window {
     height: 480
     visible: true
     property alias rectangle1Color: navBar.color
-    title: qsTr("DeviceID")
+    title: `Device ID: ${con.deviceid}`
 
     function twoDigit(num) {
         return num < 10 ? "0" + num : num;
@@ -130,7 +130,7 @@ Window {
                 Text {
                     id: text5
                     color: "#ffffff"
-                    text: qsTr("Standby")
+                    text: con.status
                     font.pixelSize: 12
                     horizontalAlignment: Text.AlignRight
                     Layout.fillHeight: false
@@ -283,11 +283,11 @@ Window {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: childFrame1.top
-            source: "qrc:/icons/goat.png"
-            anchors.bottomMargin: 0
-            anchors.rightMargin: 0
-            anchors.leftMargin: 0
-            anchors.topMargin: 0
+            source: con.capturefile
+            anchors.bottomMargin: 2
+            anchors.rightMargin: 2
+            anchors.leftMargin: 2
+            anchors.topMargin: 2
             fillMode: Image.PreserveAspectFit
         }
     }

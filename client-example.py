@@ -2,6 +2,8 @@ from time import sleep
 import paho.mqtt.client as client
 import json as json
 import random
+from pathlib import Path
+import os
 import time
 
 mqtt = client.Client()
@@ -14,6 +16,7 @@ def on_message(client, userdata, msg):
     cmd = payload["cmd"]
     if cmd == "capture":
         print("capture requested, i will send the response A.S.A.P")
+        pwd = os.fspath(Path(__file__).resolve().parent)
         publish({
             "cmd": "capture",
             "type": "PUT",
@@ -21,7 +24,7 @@ def on_message(client, userdata, msg):
                 "rfid": str(random.random()).split(".")[1],
                 "weight": "{0} Kg".format(random.randint(20, 100)),
                 "timestamp": time.time(),
-                "capture_file": "./captures/target-{0}.jpg".format(random.randint(1,5))
+                "capture_file": "{0}/captures/target-{1}.png".format(pwd, random.randint(1,5))
             }
         })
     elif cmd == "open_gate":
@@ -31,6 +34,19 @@ def on_message(client, userdata, msg):
     elif cmd == "swap_gate":
         print("Swaping gate, in: ", payload["data"]["in"], " out: ", payload["data"]["out"])
 
+def healthcheck():
+    publish({
+        "cmd": "healthcheck",
+        "type": "PUT",
+        "data": {
+            "device_id": "ff:de:aa:12:f2",
+            "code": "200",
+            "timestamp": time.time(),
+            "message": "Online",
+        }
+    })
+
+
 if __name__ == "__main__":
     mqtt.on_message=on_message
     mqtt.connect("127.0.0.1")
@@ -38,4 +54,5 @@ if __name__ == "__main__":
     mqtt.loop_start()
 
     while True:
-        sleep(1)
+        healthcheck()
+        sleep(30)

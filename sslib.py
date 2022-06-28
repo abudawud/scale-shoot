@@ -4,6 +4,8 @@ import configparser
 import paho.mqtt.client as client
 import json as json
 from datetime import datetime
+from time import time, sleep
+from threading import Thread
 
 
 class Console(QtCore.QObject):
@@ -18,11 +20,29 @@ class Console(QtCore.QObject):
         self.mqtt.subscribe("scale_shoot_backend")
         self.mqtt.loop_start()
 
+        self.lastHealthcheck = time()
+
         # qml property
         self._weight = "0 Kg"
         self._rfid = "-"
         self._timestamp = "-,-"
-        self._capturefile = ""
+        self._capturefile = "qrc:/icons/goat.png"
+        self._deviceid = "unknown"
+        self._status = "Offline"
+
+        self.sc_thread = Thread(target=self._self_check)
+        self.sc_thread.daemon = True
+        self.sc_thread.start()
+
+    def _self_check(self):
+        while True:
+            # check backend timeout
+            if (time() - self.lastHealthcheck) > 60:
+                self.lastHealthcheck = time()
+                self.status = "Offline"
+                self.deviceid = "Disconnected"
+                print("Device Offline: no healthcheck received within 60s")
+            sleep(10)
 
     def on_message(self, client, userdata, message):
         payload = json.loads(message.payload)
@@ -32,8 +52,14 @@ class Console(QtCore.QObject):
             data = payload["data"]
             self.weight = data["weight"]
             self.rfid = data["rfid"]
+            self.capturefile = "file:///{0}".format(data["capture_file"])
             dt = datetime.fromtimestamp(data["timestamp"])
             self.timestamp = dt.strftime("%d/%m/%Y,%H:%M:%S")
+        elif cmd == "healthcheck" and type == "PUT":
+            data = payload["data"]
+            self.status = data["message"]
+            self.deviceid = data["device_id"]
+            self.lastHealthcheck = data["timestamp"]
 
     def publish(self, payload):
         self.mqtt.publish("scale_shoot_frontend", json.dumps(payload))
@@ -45,7 +71,6 @@ class Console(QtCore.QObject):
     @QtCore.Slot(str)
     def evalCMD(self, s):
         if s == "capture":
-            print("capture")
             self.publish({
                 "cmd": "capture",
                 "type": "GET",
@@ -54,11 +79,9 @@ class Console(QtCore.QObject):
             gateIn = "gate_x"
             gateOut = "gate_x"
             if s == "swap_gate_in_a":
-                print("in a")
                 gateIn = "gate_a"
                 gateOut = "gate_b"
             else:
-                print("in b")
                 gateIn = "gate_b"
                 gateOut = "gate_a"
 
@@ -73,10 +96,8 @@ class Console(QtCore.QObject):
         elif s == "open_gate_a" or s == "open_gate_b":
             target = "gate_x"
             if s == "open_gate_a":
-                print("open gate a")
                 target = "gate_a"
             else:
-                print("open gate b")
                 target = "gate_b"
 
             self.publish({
@@ -89,10 +110,8 @@ class Console(QtCore.QObject):
         elif s == "toggle_mode_manual" or s == "toggle_mode_auto":
             mode = "x"
             if s == "toggle_mode_manual":
-                print("manual")
                 mode = "manual"
             else:
-                print("auto")
                 mode = "auto"
             self.publish({
                 "cmd": "toggle_mode",
@@ -123,12 +142,40 @@ class Console(QtCore.QObject):
         self._timestamp = timestamp
         self.on_timestamp.emit()
 
+    def _get_capturefile(self):
+        return self._capturefile
+
+    def _set_capturefile(self, capturefile):
+        self._capturefile = capturefile
+        self.on_capturefile.emit()
+
+    def _get_status(self):
+        return self._status
+
+    def _set_status(self, status):
+        self._status = status
+        self.on_status.emit()
+
+    def _get_deviceid(self):
+        return self._deviceid
+
+    def _set_deviceid(self, deviceid):
+        self._deviceid = deviceid
+        self.on_deviceid.emit()
+
     on_weight = QtCore.Signal()
     on_rfid = QtCore.Signal()
     on_timestamp = QtCore.Signal()
     on_capturefile = QtCore.Signal()
+    on_deviceid = QtCore.Signal()
+    on_status = QtCore.Signal()
 
     weight = QtCore.Property(str, _get_weight, _set_weight, notify=on_weight)
     rfid = QtCore.Property(str, _get_rfid, _set_rfid, notify=on_rfid)
     timestamp = QtCore.Property(str, _get_timestamp, _set_timestamp,
                                 notify=on_timestamp)
+    capturefile = QtCore.Property(str, _get_capturefile, _set_capturefile,
+                                  notify=on_capturefile)
+    status = QtCore.Property(str, _get_status, _set_status, notify=on_status)
+    deviceid = QtCore.Property(str, _get_deviceid, _set_deviceid,
+                               notify=on_deviceid)
