@@ -11,24 +11,24 @@ Window {
     width: 800
     height: 480
     visible: true
+    visibility: Window.FullScreen
     property alias rectangle1Color: navBar.color
-    title: `Device ID: ${con.deviceid}`
 
     function twoDigit(num) {
         return num < 10 ? "0" + num : num;
     }
 
     function getCurrentTime() {
-            const date = new Date()
-            const day = twoDigit(date.getDate())
-            const month = twoDigit(date.getMonth())
-            const year = date.getFullYear()
-            const hours = twoDigit(date.getHours())
-            const minutes = twoDigit(date.getMinutes())
-            const second = twoDigit(date.getSeconds())
+        const date = new Date()
+        const day = twoDigit(date.getDate())
+        const month = twoDigit(date.getMonth())
+        const year = date.getFullYear()
+        const hours = twoDigit(date.getHours())
+        const minutes = twoDigit(date.getMinutes())
+        const second = twoDigit(date.getSeconds())
 
-            return `${day}/${month}/${year} ${hours}:${minutes}:${second}`;
-        }
+        return day + '/' + month + '/' + year + ' ' + hours + ':' + minutes + ':' + second
+    }
 
 
     Timer{
@@ -56,19 +56,39 @@ Window {
 
 
 
-            Text {
-                id: text1
+            ColumnLayout {
+                id: columnLayout7
                 width: 266
-                color: "#ffffff"
-                text: qsTr("ScaleShoot")
-                font.pixelSize: 16
-                horizontalAlignment: Text.AlignLeft
-                verticalAlignment: Text.AlignVCenter
-                Layout.preferredHeight: 100
+                height: 100
+                Layout.preferredHeight: -1
                 Layout.preferredWidth: 200
-                Layout.fillWidth: false
+                spacing: 1
                 Layout.fillHeight: true
-                font.weight: Font.Bold
+                Layout.fillWidth: false
+
+                Text {
+                    id: text1
+                    width: 266
+                    color: "#ffffff"
+                    text: qsTr("Aslis")
+                    font.pixelSize: 12
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignVCenter
+                    Layout.fillHeight: false
+                    Layout.fillWidth: true
+                    font.weight: Font.Bold
+                }
+
+                Text {
+                    id: text3
+                    color: "#ffffff"
+                    text: con.deviceid
+                    font.pixelSize: 12
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignVCenter
+                    Layout.fillHeight: false
+                    Layout.fillWidth: true
+                }
             }
 
             ColumnLayout {
@@ -137,6 +157,8 @@ Window {
                     Layout.fillWidth: true
                 }
             }
+
+
         }
     }
 
