@@ -50,6 +50,7 @@ Payload have this JSON structure
 |[swap_gate](#swap_gate)|GET|Change gate A->B and vice versa|
 |[open_gate](#open_gate)|PUT|Open Gate|
 |[toggle_mode](#toggle_mode)|PUT|Change mode manual / automatic|
+|[wifi_config](#wifi_config)|PUT, GET|Wifi configuration|
 
 
 #### healthcheck
@@ -132,3 +133,24 @@ Payload have this JSON structure
 ```
 - type: `PUT` | `GET`
 - mode: `manual` | `auto`
+
+#### wifi_config
+
+*GET*
+```json
+{
+    "cmd": "wifi_config",
+    "type": "GET",
+}
+```
+
+*PUT*
+```json
+{
+    "cmd": "wifi_config",
+    "type": "PUT",
+    "data": {
+        "ssid": "My AP",
+        "psk": "12345abc",
+}
+```
