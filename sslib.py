@@ -68,6 +68,21 @@ class Console(QtCore.QObject):
     def getConfig(self, key):
         return self.config.get("main", key)
 
+    @QtCore.Slot(str, str)
+    def setWifi(self, ssid, psk):
+        self.config.set("main", "ssid", ssid)
+        self.config.set("main", "psk", psk)
+        self.publish({
+            "cmd": "wifi_config",
+            "type": "PUT",
+            "data": {
+                "ssid": ssid,
+                "psk": psk
+            }
+        })
+        with open("config.ini", "w") as configfile:
+            self.config.write(configfile)
+
     @QtCore.Slot(str)
     def evalCMD(self, s):
         if s == "capture":

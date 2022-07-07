@@ -6,5 +6,6 @@
         <file>icons/manual.svg</file>
         <file>icons/unlock.svg</file>
         <file>icons/goat.png</file>
+        <file>icons/setting.svg</file>
     </qresource>
 </RCC>

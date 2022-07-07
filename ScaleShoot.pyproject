@@ -1,4 +1,4 @@
 {
-    "files": ["main.py","main.qml","rc_icon.qrc", "sslib.py", "config.ini"],
+    "files": ["main.py","main.qml","Setting.qml", "rc_icon.qrc", "sslib.py", "config.ini"],
     "qmlImportPaths": ["~/.local/lib/qt/qml"]
 }

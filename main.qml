@@ -11,8 +11,13 @@ Window {
     width: 800
     height: 480
     visible: true
+    title: "Aslis v1.0"
     visibility: Window.FullScreen
     property alias rectangle1Color: navBar.color
+
+    property var  setting: Setting {
+        visible: false
+    }
 
     function twoDigit(num) {
         return num < 10 ? "0" + num : num;
@@ -53,8 +58,19 @@ Window {
             anchors.rightMargin: 5
             anchors.leftMargin: 5
 
-
-
+            Button {
+                id: button
+                width: 40
+                text: qsTr("")
+                palette.buttonText: "#ffffff"
+                icon.source: "qrc:/icons/setting.svg"
+                palette.button: activeColor
+                Layout.preferredHeight: 35
+                Layout.preferredWidth: 35
+                onClicked: {
+                    setting.visible = true
+                }
+            }
 
             ColumnLayout {
                 id: columnLayout7
@@ -71,21 +87,24 @@ Window {
                     width: 266
                     color: "#ffffff"
                     text: qsTr("Aslis")
-                    font.pixelSize: 12
+                    font.pixelSize: 16
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
+                    Layout.preferredHeight: -1
                     Layout.fillHeight: false
                     Layout.fillWidth: true
-                    font.weight: Font.Bold
+                    font.weight: Font.ExtraBold
                 }
 
                 Text {
                     id: text3
                     color: "#ffffff"
                     text: con.deviceid
-                    font.pixelSize: 12
+                    font.pixelSize: 14
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
+                    Layout.preferredHeight: -1
+                    font.weight: Font.DemiBold
                     Layout.fillHeight: false
                     Layout.fillWidth: true
                 }
@@ -105,21 +124,22 @@ Window {
                     id: text2
                     color: "#ffffff"
                     text: qsTr("TIME")
-                    font.pixelSize: 12
+                    font.pixelSize: 16
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     Layout.fillHeight: false
                     Layout.fillWidth: true
-                    font.weight: Font.Bold
+                    font.weight: Font.ExtraBold
                 }
 
                 Text {
                     id: txtCTime
                     color: "#ffffff"
                     text: getCurrentTime()
-                    font.pixelSize: 12
+                    font.pixelSize: 14
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
+                    font.weight: Font.DemiBold
                     Layout.fillHeight: false
                     Layout.fillWidth: true
                 }
@@ -140,9 +160,10 @@ Window {
                     id: text4
                     color: "#ffffff"
                     text: qsTr("STATUS")
-                    font.pixelSize: 12
+                    font.pixelSize: 16
                     horizontalAlignment: Text.AlignRight
-                    font.weight: Font.Bold
+                    lineHeight: 1
+                    font.weight: Font.ExtraBold
                     Layout.fillHeight: false
                     Layout.fillWidth: true
                 }
@@ -151,13 +172,14 @@ Window {
                     id: text5
                     color: "#ffffff"
                     text: con.status
-                    font.pixelSize: 12
+                    font.pixelSize: 14
                     horizontalAlignment: Text.AlignRight
+                    lineHeight: 1
+                    font.weight: Font.DemiBold
                     Layout.fillHeight: false
                     Layout.fillWidth: true
                 }
             }
-
 
         }
     }
@@ -177,7 +199,7 @@ Window {
         Button {
             id: btnManual
             x: 693
-            width: 110
+            width: 120
             text: qsTr("MANUAL")
             palette.button: primaryColor
             icon.source: "qrc:/icons/manual.svg"
@@ -185,6 +207,7 @@ Window {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
+            font.weight: Font.Bold
             anchors.topMargin: 0
             anchors.bottomMargin: 0
             anchors.rightMargin: 0
@@ -198,7 +221,7 @@ Window {
 
         Button {
             id: btnAuto
-            width: 110
+            width: 120
             text: qsTr("AUTO")
             icon.source: "qrc:/icons/auto.svg"
             palette.button: activeColor
@@ -206,6 +229,8 @@ Window {
             anchors.right: btnManual.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
+            font.weight: Font.Bold
+            font.bold: false
             anchors.rightMargin: 0
             anchors.bottomMargin: 0
             anchors.topMargin: 0
@@ -224,6 +249,7 @@ Window {
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
+            font.weight: Font.Bold
             anchors.leftMargin: 0
             palette.button: activeColor
             icon.source: "qrc:/icons/door.svg"
@@ -246,6 +272,7 @@ Window {
             anchors.left: btnInGateA.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
+            font.weight: Font.Bold
             anchors.leftMargin: 0
             palette.button: primaryColor
             palette.buttonText: "#ffffff"
@@ -295,7 +322,7 @@ Window {
                 font.pixelSize: 40
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
-                font.weight: Font.Bold
+                font.weight: Font.ExtraBold
             }
         }
 
@@ -316,7 +343,7 @@ Window {
 
     Rectangle {
         id: frame2
-        width: 200
+        width: 224
         height: 238
         color: "#ffffff"
         radius: 5
@@ -343,14 +370,14 @@ Window {
                 color: "#ffffff"
                 text: qsTr("DATA TARGET")
                 anchors.fill: parent
-                font.pixelSize: 14
+                font.pixelSize: 18
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
                 anchors.leftMargin: 5
                 Layout.preferredHeight: 100
                 Layout.preferredWidth: 200
                 Layout.fillHeight: true
-                font.weight: Font.Bold
+                font.weight: Font.ExtraBold
                 Layout.fillWidth: false
             }
         }
@@ -361,7 +388,7 @@ Window {
             anchors.right: parent.right
             anchors.top: childFrame2.bottom
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: -7
+            anchors.bottomMargin: -49
             spacing: 0
             anchors.topMargin: 0
 
@@ -372,8 +399,9 @@ Window {
                 color: "#00ffffff"
                 border.color: primaryColor
                 border.width: 1
+                Layout.fillWidth: true
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-                Layout.preferredHeight: 50
+                Layout.preferredHeight: 60
 
                 ColumnLayout {
                     id: columnLayout3
@@ -384,7 +412,7 @@ Window {
                     Text {
                         id: text7
                         text: qsTr("RFID")
-                        font.pixelSize: 12
+                        font.pixelSize: 16
                         font.weight: Font.Bold
                         Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                         Layout.rowSpan: 0
@@ -395,7 +423,8 @@ Window {
                     Text {
                         id: text8
                         text: con.rfid
-                        font.pixelSize: 12
+                        font.pixelSize: 15
+                        font.weight: Font.DemiBold
                         Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                         Layout.rowSpan: 0
                         Layout.fillHeight: false
@@ -411,8 +440,9 @@ Window {
                 color: "#00ffffff"
                 border.color: primaryColor
                 border.width: 1
+                Layout.fillWidth: true
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-                Layout.preferredHeight: 50
+                Layout.preferredHeight: 60
                 ColumnLayout {
                     id: columnLayout4
                     anchors.fill: parent
@@ -421,7 +451,7 @@ Window {
                     Text {
                         id: text9
                         text: qsTr("BERAT")
-                        font.pixelSize: 12
+                        font.pixelSize: 16
                         Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                         Layout.preferredHeight: -1
                         Layout.rowSpan: 0
@@ -432,7 +462,8 @@ Window {
                     Text {
                         id: text10
                         text: con.weight
-                        font.pixelSize: 12
+                        font.pixelSize: 15
+                        font.weight: Font.DemiBold
                         Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                         Layout.preferredHeight: -1
                         Layout.rowSpan: 0
@@ -448,8 +479,9 @@ Window {
                 color: "#00ffffff"
                 border.color: primaryColor
                 border.width: 1
+                Layout.fillWidth: true
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-                Layout.preferredHeight: 50
+                Layout.preferredHeight: 60
                 ColumnLayout {
                     id: columnLayout5
                     anchors.fill: parent
@@ -458,7 +490,7 @@ Window {
                     Text {
                         id: text11
                         text: qsTr("TANGGAL TIMBANG")
-                        font.pixelSize: 12
+                        font.pixelSize: 16
                         Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                         Layout.rowSpan: 0
                         Layout.preferredHeight: -1
@@ -469,7 +501,8 @@ Window {
                     Text {
                         id: text12
                         text: con.timestamp.split(",")[0]
-                        font.pixelSize: 12
+                        font.pixelSize: 15
+                        font.weight: Font.DemiBold
                         Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                         Layout.rowSpan: 0
                         Layout.preferredHeight: -1
@@ -485,8 +518,9 @@ Window {
                 color: "#00ffffff"
                 border.color: primaryColor
                 border.width: 1
+                Layout.fillWidth: true
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-                Layout.preferredHeight: 50
+                Layout.preferredHeight: 60
                 ColumnLayout {
                     id: columnLayout6
                     anchors.fill: parent
@@ -495,7 +529,7 @@ Window {
                     Text {
                         id: text13
                         text: qsTr("JAM TIMBANG")
-                        font.pixelSize: 12
+                        font.pixelSize: 16
                         Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                         Layout.preferredHeight: -1
                         Layout.rowSpan: 0
@@ -506,7 +540,8 @@ Window {
                     Text {
                         id: text14
                         text: con.timestamp.split(",")[1]
-                        font.pixelSize: 12
+                        font.pixelSize: 15
+                        font.weight: Font.DemiBold
                         Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                         Layout.preferredHeight: -1
                         Layout.rowSpan: 0
