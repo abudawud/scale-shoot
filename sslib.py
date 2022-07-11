@@ -6,6 +6,7 @@ import json as json
 from datetime import datetime
 from time import time, sleep
 from threading import Thread
+import netifaces
 
 
 class Console(QtCore.QObject):
@@ -67,6 +68,22 @@ class Console(QtCore.QObject):
     @QtCore.Slot(str, result=str)
     def getConfig(self, key):
         return self.config.get("main", key)
+
+    @QtCore.Slot(result=str)
+    def getIPAddr(self):
+        ipAddr = "unknown"
+        iface = self.config.get("main", "iface")
+
+        try:
+            ipAddr = netifaces.ifaddresses(iface)[2][0]['addr']
+        except ValueError:
+            ipAddr = "iface " + iface + " not found"
+        except KeyError:
+            ipAddr = iface + " not connected"
+        except:
+            ipAddr = "unknown error"
+
+        return ipAddr
 
     @QtCore.Slot(str, str)
     def setWifi(self, ssid, psk):

@@ -56,4 +56,32 @@ Window {
             settingWindow.visible = false
         }
     }
+
+    Label {
+        id: label2
+        x: 37
+        y: 157
+        text: qsTr("IP ADDR")
+    }
+
+    Label {
+        id: lblIpAddr
+        x: 140
+        y: 157
+        text: qsTr("0.0.0.0")
+        font.weight: Font.Bold
+    }
+
+    Button {
+        id: button1
+        x: 284
+        y: 153
+        width: 56
+        height: 30
+        icon.source: "qrc:/icons/refresh.svg"
+        text: qsTr("")
+        onClicked: {
+            lblIpAddr.text = con.getIPAddr()
+        }
+    }
 }
