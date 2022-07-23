@@ -55,4 +55,4 @@ if __name__ == "__main__":
 
     while True:
         healthcheck()
-        sleep(30)
+        sleep(3)

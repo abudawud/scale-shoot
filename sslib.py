@@ -14,13 +14,8 @@ class Console(QtCore.QObject):
         super().__init__()
         self.config = configparser.ConfigParser()
         self.config.read("config.ini")
-        self.mqtt = client.Client()
         self.mqtt_data = []
-        self.mqtt.on_message = self.on_message
-        self.mqtt.connect(self.config.get("main", "broker_uri"))
-        self.mqtt.subscribe("scale_shoot_backend")
-        self.mqtt.loop_start()
-
+        self.mqtt = client.Client()
         self.lastHealthcheck = time()
 
         # qml property
@@ -30,20 +25,37 @@ class Console(QtCore.QObject):
         self._capturefile = "qrc:/icons/goat.png"
         self._deviceid = "unknown"
         self._status = "Offline"
+        self._mqttOk = False
 
         self.sc_thread = Thread(target=self._self_check)
         self.sc_thread.daemon = True
         self.sc_thread.start()
+        self.initMqtt()
+
+    def initMqtt(self):
+        try:
+            self.mqtt.connect(self.config.get("main", "broker_uri"))
+            self.mqtt.on_message = self.on_message
+            self.mqtt.subscribe("scale_shoot_backend")
+            self.mqtt.loop_start()
+            self._mqttOk = True
+            self.status = "Offline"
+        except:
+            self._mqttOk = False
+            self.status = "No MQTT"
 
     def _self_check(self):
         while True:
             # check backend timeout
-            if (time() - self.lastHealthcheck) > 60:
+            if (time() - self.lastHealthcheck) > 10:
                 self.lastHealthcheck = time()
                 self.status = "Offline"
                 self.deviceid = "Disconnected"
-                print("Device Offline: no healthcheck received within 60s")
-            sleep(10)
+                print("Device Offline: no healthcheck received within 10s")
+            sleep(3)
+
+            if self._mqttOk is False:
+                self.initMqtt()
 
     def on_message(self, client, userdata, message):
         payload = json.loads(message.payload)
@@ -63,7 +75,8 @@ class Console(QtCore.QObject):
             self.lastHealthcheck = data["timestamp"]
 
     def publish(self, payload):
-        self.mqtt.publish("scale_shoot_frontend", json.dumps(payload))
+        if self._mqttOk:
+            self.mqtt.publish("scale_shoot_frontend", json.dumps(payload))
 
     @QtCore.Slot(str, result=str)
     def getConfig(self, key):
