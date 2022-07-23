@@ -3,6 +3,8 @@ from PySide2 import QtCore
 import configparser
 import paho.mqtt.client as client
 import json as json
+import os
+from pathlib import Path
 from datetime import datetime
 from time import time, sleep
 from threading import Thread
@@ -13,7 +15,7 @@ class Console(QtCore.QObject):
     def __init__(self):
         super().__init__()
         self.config = configparser.ConfigParser()
-        self.config.read("config.ini")
+        self.config.read(os.fspath(Path(__file__).resolve().parent / "config.ini"))
         self.mqtt_data = []
         self.mqtt = client.Client()
         self.lastHealthcheck = time()
@@ -43,13 +45,16 @@ class Console(QtCore.QObject):
         except:
             self._mqttOk = False
             self.status = "No MQTT"
+            print("Err: failed to connect mqtt on ",
+                  self.config.get("main", "broker_uri"))
 
     def _self_check(self):
         while True:
             # check backend timeout
             if (time() - self.lastHealthcheck) > 10:
                 self.lastHealthcheck = time()
-                self.status = "Offline"
+                if self._mqttOk:
+                    self.status = "Offline"
                 self.deviceid = "Disconnected"
                 print("Device Offline: no healthcheck received within 10s")
             sleep(3)
@@ -63,7 +68,7 @@ class Console(QtCore.QObject):
         type = payload["type"]
         if cmd == "capture" and type == "PUT":
             data = payload["data"]
-            self.weight = data["weight"]
+            self.weight = "{0} Kg".format(data["weight"])
             self.rfid = data["rfid"]
             self.capturefile = "file:///{0}".format(data["capture_file"])
             dt = datetime.fromtimestamp(data["timestamp"])

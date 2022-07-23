@@ -12,7 +12,7 @@ Window {
     height: 480
     visible: true
     title: "Aslis v1.0"
-    visibility: Window.FullScreen
+//    visibility: Window.FullScreen
     property alias rectangle1Color: navBar.color
 
     property var  setting: Setting {
