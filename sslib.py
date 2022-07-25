@@ -118,6 +118,20 @@ class Console(QtCore.QObject):
         with open("config.ini", "w") as configfile:
             self.config.write(configfile)
 
+    @QtCore.Slot()
+    def setCalibration(self):
+        ctime = str(time())
+        self.config.set("main", "last_calibrated", ctime)
+        self.publish({
+            "cmd": "calibration",
+            "type": "PUT",
+            "data": {
+                "time": ctime
+            }
+        })
+        with open("config.ini", "w") as configfile:
+            self.config.write(configfile)
+
     @QtCore.Slot(str)
     def evalCMD(self, s):
         if s == "capture":

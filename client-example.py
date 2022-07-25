@@ -22,7 +22,7 @@ def on_message(client, userdata, msg):
             "type": "PUT",
             "data": {
                 "rfid": str(random.random()).split(".")[1],
-                "weight": "{0} Kg".format(random.randint(20, 100)),
+                "weight": random.randint(20, 100),
                 "timestamp": time.time(),
                 "capture_file": "{0}/captures/target-{1}.png".format(pwd, random.randint(1,5))
             }
@@ -39,7 +39,7 @@ def healthcheck():
         "cmd": "healthcheck",
         "type": "PUT",
         "data": {
-            "device_id": "ff:de:aa:12:f2",
+            "device_id": "0000000014b3e2490",
             "code": "200",
             "timestamp": time.time(),
             "message": "Online",
