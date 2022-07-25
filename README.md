@@ -51,6 +51,7 @@ Payload have this JSON structure
 |[open_gate](#open_gate)|PUT|Open Gate|
 |[toggle_mode](#toggle_mode)|PUT|Change mode manual / automatic|
 |[wifi_config](#wifi_config)|PUT, GET|Wifi configuration|
+|[calibration](#calibration)|PUT|Set calibration|
 
 
 #### healthcheck
@@ -152,5 +153,18 @@ Payload have this JSON structure
     "data": {
         "ssid": "My AP",
         "psk": "12345abc",
+}
+```
+
+#### calibration
+
+*PUT*
+```json
+{
+    "cmd": "calibration",
+    "type": "PUT",
+    "data": {
+        "time": "1658766312.3471994"
+    }
 }
 ```
