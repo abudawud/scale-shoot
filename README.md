@@ -51,7 +51,7 @@ Payload have this JSON structure
 |[open_gate](#open_gate)|PUT|Open Gate|
 |[toggle_mode](#toggle_mode)|PUT|Change mode manual / automatic|
 |[wifi_config](#wifi_config)|PUT, GET|Wifi configuration|
-|[calibration](#calibration)|PUT|Set calibration|
+|[calibration](#calibration)|PUT|Proses calibration|
 
 
 #### healthcheck
@@ -158,13 +158,22 @@ Payload have this JSON structure
 
 #### calibration
 
+Pada proses kalibrasi, message di atur oleh node yg melakukan publish. Hal ini memungkinkan publisher (eg: backend) untuk mengirim pesan kalibrasi sesuai dengan hasil kalibrasi.
+
 *PUT*
 ```json
 {
     "cmd": "calibration",
     "type": "PUT",
     "data": {
-        "time": "1658766312.3471994"
+        "state": "init"
+        "message": "Init kalibrasi"
     }
 }
 ```
+
+- state: `init`| `start` | `end`
+    - `init`: init kalibrasi, kirim state init ke backend untuk memulai kalibrasi
+    - `start`: backend meresponse dengan state `start` untuk menandakan kalibrasi sudah dimulai
+    - `end`: backend state `end` untuk menandakan kalibrasi selesai
+- message: pesan kalibrasi
