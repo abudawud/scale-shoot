@@ -27,6 +27,8 @@ class Console(QtCore.QObject):
         self._capturefile = "qrc:/icons/goat.png"
         self._deviceid = "unknown"
         self._status = "Offline"
+        dt = datetime.fromtimestamp(float(self.config.get("main", "last_calibrated")))
+        self._calibrationStatus = dt.strftime("%d/%m/%Y %H:%M:%S")
         self._mqttOk = False
 
         self.sc_thread = Thread(target=self._self_check)
@@ -78,6 +80,16 @@ class Console(QtCore.QObject):
             self.status = data["message"]
             self.deviceid = data["device_id"]
             self.lastHealthcheck = data["timestamp"]
+        elif cmd == "calibration" and type == "PUT":
+            data = payload["data"]
+            if data["state"] == "start":
+                self.calibrationStatus = data["message"]
+            elif data["state"] == "end":
+                self.calibrationStatus = data["message"]
+                ctime = str(time())
+                self.config.set("main", "last_calibrated", ctime)
+                with open("config.ini", "w") as configfile:
+                    self.config.write(configfile)
 
     def publish(self, payload):
         if self._mqttOk:
@@ -119,18 +131,21 @@ class Console(QtCore.QObject):
             self.config.write(configfile)
 
     @QtCore.Slot()
-    def setCalibration(self):
-        ctime = str(time())
-        self.config.set("main", "last_calibrated", ctime)
+    def setDefault(self):
+        dt = datetime.fromtimestamp(float(self.config.get("main", "last_calibrated")))
+        self.calibrationStatus = dt.strftime("%d/%m/%Y %H:%M:%S")
+
+    @QtCore.Slot()
+    def initCalibration(self):
+        self.calibrationStatus = "Memulai kalibrasi..."
         self.publish({
             "cmd": "calibration",
             "type": "PUT",
             "data": {
-                "time": ctime
+                "state": "init",
+                "message": "Init kalibrasi",
             }
         })
-        with open("config.ini", "w") as configfile:
-            self.config.write(configfile)
 
     @QtCore.Slot(str)
     def evalCMD(self, s):
@@ -220,6 +235,13 @@ class Console(QtCore.QObject):
         self._status = status
         self.on_status.emit()
 
+    def _get_calibrationStatus(self):
+        return self._calibrationStatus
+
+    def _set_calibrationStatus(self, calibrationStatus):
+        self._calibrationStatus = calibrationStatus
+        self.on_calibrationStatus.emit()
+
     def _get_deviceid(self):
         return self._deviceid
 
@@ -233,6 +255,7 @@ class Console(QtCore.QObject):
     on_capturefile = QtCore.Signal()
     on_deviceid = QtCore.Signal()
     on_status = QtCore.Signal()
+    on_calibrationStatus = QtCore.Signal()
 
     weight = QtCore.Property(str, _get_weight, _set_weight, notify=on_weight)
     rfid = QtCore.Property(str, _get_rfid, _set_rfid, notify=on_rfid)
@@ -241,5 +264,8 @@ class Console(QtCore.QObject):
     capturefile = QtCore.Property(str, _get_capturefile, _set_capturefile,
                                   notify=on_capturefile)
     status = QtCore.Property(str, _get_status, _set_status, notify=on_status)
+    calibrationStatus = QtCore.Property(str, _get_calibrationStatus,
+                                        _set_calibrationStatus,
+                                        notify=on_calibrationStatus)
     deviceid = QtCore.Property(str, _get_deviceid, _set_deviceid,
                                notify=on_deviceid)

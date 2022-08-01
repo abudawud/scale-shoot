@@ -7,11 +7,13 @@ import os
 import time
 
 mqtt = client.Client()
+mode = "hc"
 
 def publish(data):
     mqtt.publish("scale_shoot_backend", json.dumps(data))
 
 def on_message(client, userdata, msg):
+    global mode
     payload = json.loads(msg.payload)
     cmd = payload["cmd"]
     if cmd == "capture":
@@ -33,6 +35,21 @@ def on_message(client, userdata, msg):
         print("switching mode to: ", payload["data"]["mode"])
     elif cmd == "swap_gate":
         print("Swaping gate, in: ", payload["data"]["in"], " out: ", payload["data"]["out"])
+    elif cmd == "calibration":
+        print("Init kalibrasi diminta, memulai prosedur kalibrasi...")
+        sleep(2)
+        data = payload["data"]
+        print(data)
+        if data["state"] == "init":
+            mode = "cb"
+            publish({
+                "cmd": "calibration",
+                "type": "PUT",
+                "data": {
+                    "state": "start",
+                    "message": "Kalibrasi dimulai silahkan letakkan kambing anda",
+                }
+            })
 
 def healthcheck():
     publish({
@@ -54,5 +71,26 @@ if __name__ == "__main__":
     mqtt.loop_start()
 
     while True:
-        healthcheck()
+        if mode == "cb":
+            mode = "hc"
+            sleep(2)
+            publish({
+                "cmd": "calibration",
+                "type": "PUT",
+                "data": {
+                    "state": "start",
+                    "message": "Kambing diterima, mohon tunggu sebentar...",
+                }
+            })
+            sleep(2)
+            publish({
+                "cmd": "calibration",
+                "type": "PUT",
+                "data": {
+                    "state": "end",
+                    "message": "Kalibrasi berhasil pada: {0}".format(time.time()),
+                }
+            })
+        else:
+            healthcheck()
         sleep(3)

@@ -69,6 +69,7 @@ Window {
                 Layout.preferredWidth: 35
                 onClicked: {
                     setting.visible = true
+                    con.setDefault()
                 }
             }
 

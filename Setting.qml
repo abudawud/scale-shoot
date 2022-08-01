@@ -179,7 +179,8 @@ Window {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 horizontalAlignment: Text.AlignHCenter
-                text: toDateTime(parseFloat(con.getConfig("last_calibrated")) * 1000)
+                wrapMode: Text.Wrap
+                text: con.calibrationStatus
             }
             Rectangle {
                 id: rectangle2
@@ -197,10 +198,8 @@ Window {
                     anchors.right: parent.right
                     anchors.rightMargin: 4
                     onClicked: {
-                        con.setCalibration()
-                        lblLastCalibrated.text = getCurrentTime()
+                        con.initCalibration()
                     }
-
                 }
 
                 Button {
