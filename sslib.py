@@ -53,12 +53,12 @@ class Console(QtCore.QObject):
     def _self_check(self):
         while True:
             # check backend timeout
-            if (time() - self.lastHealthcheck) > 10:
+            if (time() - self.lastHealthcheck) > 60:
                 self.lastHealthcheck = time()
                 if self._mqttOk:
                     self.status = "Offline"
                 self.deviceid = "Disconnected"
-                print("Device Offline: no healthcheck received within 10s")
+                print("Device Offline: no healthcheck received within 60s")
             sleep(3)
 
             if self._mqttOk is False:
