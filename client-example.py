@@ -42,14 +42,6 @@ def on_message(client, userdata, msg):
         print(data)
         if data["state"] == "init":
             mode = "cb"
-            publish({
-                "cmd": "calibration",
-                "type": "PUT",
-                "data": {
-                    "state": "start",
-                    "message": "Kalibrasi dimulai silahkan letakkan kambing anda",
-                }
-            })
 
 def healthcheck():
     publish({
@@ -63,6 +55,33 @@ def healthcheck():
         }
     })
 
+def calibration():
+    publish({
+        "cmd": "calibration",
+        "type": "PUT",
+        "data": {
+            "state": "start",
+            "message": "Kalibrasi dimulai silahkan letakkan kambing anda",
+        }
+    })            
+    sleep(2)
+    publish({
+        "cmd": "calibration",
+        "type": "PUT",
+        "data": {
+            "state": "start",
+            "message": "Kambing diterima, mohon tunggu sebentar...",
+        }
+    })
+    sleep(2)
+    publish({
+        "cmd": "calibration",
+        "type": "PUT",
+        "data": {
+            "state": "end",
+            "message": "Kalibrasi berhasil pada: {0}".format(time.time()),
+        }
+    })
 
 if __name__ == "__main__":
     mqtt.on_message=on_message
@@ -73,24 +92,7 @@ if __name__ == "__main__":
     while True:
         if mode == "cb":
             mode = "hc"
-            sleep(2)
-            publish({
-                "cmd": "calibration",
-                "type": "PUT",
-                "data": {
-                    "state": "start",
-                    "message": "Kambing diterima, mohon tunggu sebentar...",
-                }
-            })
-            sleep(2)
-            publish({
-                "cmd": "calibration",
-                "type": "PUT",
-                "data": {
-                    "state": "end",
-                    "message": "Kalibrasi berhasil pada: {0}".format(time.time()),
-                }
-            })
+            calibration()
         else:
             healthcheck()
         sleep(3)
